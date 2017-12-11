@@ -1,0 +1,28 @@
+{
+  "name": "air-drop",
+  "version": "1.0.0",
+  "description": "airdrop for leverj awareness program",
+  "main": "truffle-config.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "truffle test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/leverj/air-drop.git"
+  },
+  "author": "leverj",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/leverj/air-drop/issues"
+  },
+  "homepage": "https://github.com/leverj/air-drop#readme",
+  "devDependencies": {
+    "ethjs-provider-http": "^0.1.6",
+    "ethjs-rpc": "^0.1.8",
+    "expect.js": "^0.3.1",
+    "web3": "^1.0.0-beta.26"
+  }
+}

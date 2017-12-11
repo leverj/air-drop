@@ -20,6 +20,7 @@
   },
   "homepage": "https://github.com/leverj/air-drop#readme",
   "devDependencies": {
+    "affirm.js": "^1.0.0",
     "ethjs-provider-http": "^0.1.6",
     "ethjs-rpc": "^0.1.8",
     "expect.js": "^0.3.1",

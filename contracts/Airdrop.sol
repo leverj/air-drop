@@ -7,41 +7,90 @@ import "./Token.sol";
 
 contract Airdrop is Owned {
 
-  mapping (address => uint256) public releaseBlocks;
-
-  mapping (address => bool) public redeemed;
+  mapping (address => bool) public users;
 
   uint public levPerUser;
 
   Token public token;
 
-  function Airdrop(address[] owners, Token _token, uint _levPerUser) public {
-    require(_token != address(0x0));
-    require(_levPerUser > 0);
-    setOwners(owners);
-    token = _token;
-    levPerUser = _levPerUser;
+  uint public freeze;
+
+  uint public expiry;
+
+  bool public dropEnabled;
+
+  event Redeemed(address user, uint tokens);
+
+  modifier expired{
+    require(expiry < now);
+    _;
   }
 
-  function addReleaseBlocks(address[] users, uint256[] blocks) onlyOwner public {
-    require(users.length > 0 && users.length == blocks.length);
-    for (uint i = 0; i < users.length; i++) {
-      releaseBlocks[users[i]] = blocks[i];
+  modifier notFrozen{
+    require(freeze > now);
+    _;
+  }
+
+  modifier isDropEnabled{
+    require(dropEnabled);
+    _;
+  }
+
+  function Airdrop(address[] owners, address _token, uint _levPerUser, uint _freeze, uint _expiry) public {
+    require(_token != address(0x0));
+    require(_levPerUser > 0);
+    require(_freeze < _expiry && _freeze > now);
+    setOwners(owners);
+    token = Token(_token);
+    levPerUser = _levPerUser;
+    freeze = _freeze;
+    expiry = _expiry;
+  }
+
+  function changeDuration(uint _freeze, uint _expiry) onlyOwner notFrozen public {
+    require(_freeze < _expiry && _freeze > now);
+    freeze = _freeze;
+    expiry = _expiry;
+  }
+
+  function addUsers(address[] _users) onlyOwner notFrozen public {
+    require(_users.length > 0);
+    for (uint i = 0; i < _users.length; i++) {
+      users[_users[i]] = true;
     }
+  }
+
+  function removeUsers(address[] _users) onlyOwner notFrozen public {
+    require(_users.length > 0);
+    for (uint i = 0; i < _users.length; i++) {
+      users[_users[i]] = false;
+    }
+  }
+
+  function toggleDrop() onlyOwner public {
+    require(now > freeze);
+    dropEnabled = !dropEnabled;
   }
 
   function redeemTokens() public {
-    uint256 tokensAvailable = getTokensAvailable();
+    uint256 tokensAvailable = getTokensAvailable(msg.sender);
     require(tokensAvailable > 0);
-    redeemed[msg.sender] = true;
+    users[msg.sender] = false;
     token.transfer(msg.sender, tokensAvailable);
+    Redeemed(msg.sender, tokensAvailable);
   }
 
-  function getTokensAvailable() public constant returns(uint256) {
-    if (block.number >= releaseBlocks[msg.sender] && releaseBlocks[msg.sender] > 0 && !redeemed[msg.sender]) {
+  function getTokensAvailable(address user) public constant returns (uint256) {
+    if (users[user] && dropEnabled) {
       return levPerUser;
-    } else {
+    }
+    else {
       return 0;
     }
+  }
+
+  function transferUnclaimedTokens(address _address) onlyOwner expired public {
+    uint256 balance = token.balanceOf(this);
+    token.transfer(_address, balance);
   }
 }

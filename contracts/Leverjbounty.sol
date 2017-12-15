@@ -5,11 +5,11 @@ import "./Owned.sol";
 import "./Token.sol";
 
 
-contract Airdrop is Owned {
+contract Leverjbounty is Owned {
 
   mapping (address => bool) public users;
 
-  uint public levPerUser;
+  uint256 public levPerUser;
 
   Token public token;
 
@@ -36,7 +36,7 @@ contract Airdrop is Owned {
     _;
   }
 
-  function Airdrop(address[] owners, address _token, uint _levPerUser, uint _freeze, uint _expiry) public {
+  function Leverjbounty(address[] owners, address _token, uint256 _levPerUser, uint _freeze, uint _expiry) public {
     require(_token != address(0x0));
     require(_levPerUser > 0);
     require(_freeze < _expiry && _freeze > now);

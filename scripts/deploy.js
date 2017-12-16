@@ -22,7 +22,6 @@ async function deploy() {
     gasPrice = Math.max((await web3.eth.getGasPrice()) - 0, config.minGas);
     await createContracts();
     await addUsers();
-    // await dropTokens();
   }
 
   async function createContracts() {
@@ -39,25 +38,28 @@ async function deploy() {
   async function addUsers() {
     let chunks = _.chunk(users, 200)
     console.log(users.length, chunks.length)
-    for (let i = 13; i < chunks.length; i++) {
+    for (let i = 0; i < chunks.length; i++) {
+      console.log('chunk', i, 'start', chunks[i][0], chunks[i][chunks[i].length - 1])
       await addChunk(chunks[i])
     }
   }
 
-  async function addChunk(chunk){
-    let filtered = await filterUsers(chunk);
-    console.log('chunk', filtered.length)
-    if(filtered.length > 0) await sendTx(airdrop, airdrop.methods.addUsers(chunk))
+  async function addChunk(chunk) {
+    if (await airdrop.methods.users(chunk[0]).call())
+      return
+    // let filtered = await filterUsers(chunk);
+    // console.log('chunk', filtered.length)
+    await sendTx(airdrop, airdrop.methods.addUsers(chunk))
   }
 
-  async function filterUsers(users){
+  async function filterUsers(users) {
     let filtered = []
-    let promises = users.map(user=>airdrop.methods.users(user).call())
+    let promises = users.map(user => airdrop.methods.users(user).call())
     let result = await Promise.all(promises)
 
     for (let i = 0; i < users.length; i++) {
       let user = users[i];
-      if(!result[i]) filtered.push(users[i])
+      if (!result[i]) filtered.push(users[i])
     }
     return filtered;
   }

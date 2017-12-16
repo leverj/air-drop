@@ -10,7 +10,7 @@
     "freeze": "2018-04-01T00:00:00",
     "expiry": "2018-12-01T00:00:00"
   },
-  "tokenAddress": "0x378A6FA9228b23B8b5B63ed9FF5A7348993326CC",
-  "airDropAddress": "0x7925Ee716272745f84652e04682A0801F7663F33",
+  "tokenAddress": "0x3e5400d53c4167fc8f0fb81fa8b0104c6d279775",
+  "airDropAddress": "0xb7BfE87ea6087b7b37bba43EAbFb39E676cCE4A9",
   "users":"./users.json"
 }

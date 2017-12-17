@@ -22,6 +22,7 @@ async function deploy() {
     gasPrice = Math.max((await web3.eth.getGasPrice()) - 0, config.minGas);
     await createContracts();
     await addUsers();
+    if (process.NODE_ENV === 'develop') await sendTx(token, token.methods.transfer(airdrop._address, 10000000000))
   }
 
   async function createContracts() {

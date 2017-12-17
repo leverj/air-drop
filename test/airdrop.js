@@ -1,6 +1,6 @@
 const expect = require('expect.js')
 const affirm = require('affirm.js')
-const Airdrop = artifacts.require('./Airdrop.sol');
+const Airdrop = artifacts.require('./Leverjbounty.sol');
 const HumanStandardToken = artifacts.require('./HumanStandardToken.sol');
 const total = 100000e9
 const lib = require('./lib')

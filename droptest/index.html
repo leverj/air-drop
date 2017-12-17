@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>drop test</title>
+  <script src="web3.min.js"></script>
+  <script src="jquery-3.2.1.min.js"></script>
+  <script src="abi.js"></script>
+  <script src="client.js"></script>
+</head>
+<body>
+<div>Current User:&nbsp;<span id="current-user"></span></div>
+<div>Airdrop contract:&nbsp;<span id="airdrop"></span></div>
+<div>Freeze: <span id="freeze-text"></span></div>
+<div>Expiry: <span id="expiry-text"></span></div>
+<input id="freeze" type="text" placeholder="freeze in minutes">
+<input id="expiry" type="text" placeholder="expiry in minutes">
+<button id="change-duration" value="change duration">change duration</button>
+<br>
+<input type="text" id="user" placeholder="user"><button id="add-user">add user</button><button id="remove-user">remove user</button>
+<br>
+<button id="toggle-drop">toggle drop</button>
+<br>
+<button id="redeem-tokens">redeem tokens</button>
+<br>
+<button id="reclaim-tokens">transfer unclaimed tokens</button>
+</body>
+</html>

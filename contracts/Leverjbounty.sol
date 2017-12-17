@@ -9,6 +9,8 @@ contract Leverjbounty is Owned {
 
   mapping (address => bool) public users;
 
+  mapping (address => uint256) public social;
+
   uint256 public levPerUser;
 
   Token public token;
@@ -60,6 +62,13 @@ contract Leverjbounty is Owned {
     }
   }
 
+  function addSocial(address[] _users, uint256[] _tokens) onlyOwner notFrozen public {
+    require(_users.length > 0 && _users.length == _tokens.length);
+    for (uint i = 0; i < _users.length; i++) {
+      social[_users[i]] = _tokens[i];
+    }
+  }
+
   function removeUsers(address[] _users) onlyOwner notFrozen public {
     require(_users.length > 0);
     for (uint i = 0; i < _users.length; i++) {
@@ -81,12 +90,11 @@ contract Leverjbounty is Owned {
   }
 
   function getTokensAvailable(address user) public constant returns (uint256) {
-    if (users[user] && dropEnabled) {
-      return levPerUser;
-    }
-    else {
-      return 0;
-    }
+    if (!dropEnabled) return 0;
+    uint256 levs = social[user];
+    if (users[user]) levs += levPerUser;
+    if (token.balanceOf(this) < levs) levs = 0;
+    return levs;
   }
 
   function transferUnclaimedTokens(address _address) onlyOwner expired public {

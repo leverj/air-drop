@@ -29,6 +29,13 @@ contract('Airdrop', function (accounts) {
     }
   })
 
+  it('should allow to add social bounty information before freeze time', async function () {
+    affirm(await lib.getCurrentTime() < freeze);
+    await airdrop.addSocial([accounts[5], accounts[6]], [1e9, 2e9]);
+    expect((await airdrop.social(accounts[5])).toNumber()).to.eql(1e9);
+    expect((await airdrop.social(accounts[6])).toNumber()).to.eql(2e9);
+  })
+
   it('should allow to remove users before freeze time', async function () {
     affirm(await lib.getCurrentTime() < freeze);
     await airdrop.removeUsers([accounts[8], accounts[9]]);
@@ -76,6 +83,17 @@ contract('Airdrop', function (accounts) {
     }
     expect(await airdrop.users(accounts[8])).to.eql(false);
     expect(await airdrop.users(accounts[9])).to.eql(false);
+  })
+
+  it('should not allow to add social bounty information after freeze time', async function () {
+    affirm(await lib.getCurrentTime() > freeze);
+    try {
+      await airdrop.addSocial([accounts[8]], [1e9]);
+      expect().fail('should fail')
+    } catch (e) {
+      expect(e.message).to.eql('VM Exception while processing transaction: invalid opcode');
+    }
+    expect((await airdrop.social(accounts[8])).toNumber()).to.eql(0);
   })
 
   it('should not allow admin to change freeze time if it has frozen', async function () {
@@ -131,6 +149,13 @@ contract('Airdrop', function (accounts) {
     affirm(await airdrop.dropEnabled())
     await airdrop.redeemTokens({from: accounts[2]});
     expect(await balanceOf(token, accounts[2])).to.eql(each);
+  })
+
+  it('should allow users to redeem social and awareness tokens when redeem is not haulted', async function () {
+    affirm(await lib.getCurrentTime() > freeze);
+    affirm(await airdrop.dropEnabled())
+    await airdrop.redeemTokens({from: accounts[5]});
+    expect(await balanceOf(token, accounts[5])).to.eql(each + 1e9);
   })
 
   it('should not allow users to redeem tokens twice', async function () {

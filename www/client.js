@@ -24,7 +24,8 @@ async function client() {
   let token = new web3.eth.Contract(abi.token, tokenAddress);
   $("#airdrop").text(contractAddress)
   $("#lev").text(tokenAddress)
-
+  $("#redeem-address").text(contractAddress)
+  $("#redeem-data").text(airdrop.methods.redeemTokens().encodeABI())
   $('#refresh').click(refreshUserInfo)
   refreshUserInfo();
 

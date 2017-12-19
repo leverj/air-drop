@@ -42,7 +42,8 @@ async function client() {
     ])
     $("#token-balance").text((balance / 1e9).toFixed(9))
     $("#available-balance").text((available / 1e9).toFixed(9))
-    $("#drop-enabled").text(dropEnabled ? 'Enabled' : 'Disabled')
+    $("#drop-enabled").html(dropEnabled ? 'Enabled - LEV tokens can be redeemed.' : 'Disabled - LEV tokens <code>CAN NOT</code> be redeemed now. ' +
+      '<br> Stay tuned at <a href="https://t.me/joinchat/C-gLzkMqKr1zmoeS-ZQePg" target="_blank">leverj chat <span class="glyphicon glyphicon-share" </a>')
   }
 
 

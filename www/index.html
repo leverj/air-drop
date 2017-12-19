@@ -18,28 +18,57 @@
           crossorigin="anonymous"></script>
   <script src="web3.min.js"></script>
   <script src="abi.js"></script>
+  <script src="conf.js"></script>
   <script src="client.js"></script>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 </head>
 <body>
-<div class="container">
-  <div>Airdrop contract:&nbsp;<span id="airdrop"></span></div>
-  <div>LEV contract:&nbsp;<span id="lev"></span></div>
-  <div class="">
-    <input type="text" class="form-control" id="user-address" placeholder="Ethereum address">
-    <button id="refresh" class="">Refresh</button>
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand">
+        <img alt="Brand" src="./favicon/favicon-32x32.png">
+      </a>
+    </div>
+    <h3 class="navbar-text center">LEVERJ BOUNTY</h3>
   </div>
-  <table>
-    <tr><td>Token Balance</td><td id="token-balance">&nbsp;</td></tr>
-    <tr><td>Available LEV in Leverj bounty</td><td id="available-balance">&nbsp;</td></tr>
-    <tr><td>Drop Enabled</td><td id="drop-enabled">&nbsp;</td></tr>
+</nav>
+
+<div class="container">
+  <div class="input-group">
+    <input type="text" class="form-control" id="user-address" placeholder="Ethereum address">
+    <div id="refresh" class="input-group-addon btn"><span class="glyphicon glyphicon-refresh"></span></div>
+  </div>
+  <br>
+  <table class="table table-striped">
+    <tr>
+      <td>Airdrop contract</td>
+      <td id="airdrop">&nbsp;</td>
+    </tr>
+    <tr>
+      <td>LEV contract</td>
+      <td id="lev">&nbsp;</td>
+    </tr>
+    <tr>
+      <td>Token Balance</td>
+      <td id="token-balance">&nbsp;</td>
+    </tr>
+    <tr>
+      <td>Available LEV in Leverj bounty</td>
+      <td id="available-balance">&nbsp;</td>
+    </tr>
+    <tr>
+      <td>Drop Enabled</td>
+      <td id="drop-enabled">&nbsp;</td>
+    </tr>
   </table>
 </div>
 <div class="modal fade" id="my-modal" tabindex="-1" role="dialog">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+            aria-hidden="true">&times;</span></button>
         <h4 class="modal-title">Invalid Address</h4>
       </div>
       <div class="modal-body">

@@ -1,6 +1,4 @@
-contractAddress = '0x803631F30592d2769BB87073bf820bFf9481D8c7';
-tokenAddress = '0x3e5400d53c4167fc8f0fb81fa8b0104c6d279775';
-web3 = new Web3(new Web3.providers.HttpProvider('https://ropsten.infura.io'))
+web3 = new Web3(new Web3.providers.HttpProvider(provider))
 
 async function client() {
   let storage
@@ -23,7 +21,7 @@ async function client() {
   let user = storage['user'];
   $("#user-address").val(user)
   let airdrop = new web3.eth.Contract(abi.airdrop, contractAddress);
-  let token = new web3.eth.Contract(abi.token, contractAddress);
+  let token = new web3.eth.Contract(abi.token, tokenAddress);
   $("#airdrop").text(contractAddress)
   $("#lev").text(tokenAddress)
 

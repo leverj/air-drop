@@ -33,7 +33,9 @@ async function client() {
   async function refreshUserInfo() {
     user = $("#user-address").val()
     storage['user'] = user
-    if (!web3.utils.isAddress(user)) return alert('invalid address')
+    if (!web3.utils.isAddress(user)) {
+      $("#my-modal").modal({show: true}).on('hidden.bs.modal', () => $("#user-address").focus())
+    }
     let [balance, available, dropEnabled] = await Promise.all([
       token.methods.balanceOf(user).call(),
       airdrop.methods.balanceOf(user).call(),

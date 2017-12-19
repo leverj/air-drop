@@ -1,16 +1,15 @@
 {
   "network": "https://ropsten.infura.io/5Ik2NwtzUQsXpL5nAvXW",
-  "minGas":21e9,
+  "minGas": 21e9,
   "owners": [
     "0x833a2FA19349dAf085B94376ac3042197cF66443",
     "0xD8ada5c29785F5e486bba48Bd196B103D58BBCa5"
   ],
   "airdrop": {
-    "levPerUser": 10e9,
-    "freeze": "2018-04-01T00:00:00",
-    "expiry": "2018-12-01T00:00:00"
+    "levPerUser": 10e9
   },
   "tokenAddress": "0x3e5400d53c4167fc8f0fb81fa8b0104c6d279775",
-  "airDropAddress": "0xb7BfE87ea6087b7b37bba43EAbFb39E676cCE4A9",
-  "users":"./users.json"
+  "airDropAddress": "0x803631F30592d2769BB87073bf820bFf9481D8c7",
+  "users": "./users.json",
+  "social": "./social.json"
 }

@@ -1,4 +1,4 @@
-contractAddress = '0xb7BfE87ea6087b7b37bba43EAbFb39E676cCE4A9';
+contractAddress = '0x803631F30592d2769BB87073bf820bFf9481D8c7';
 
 async function client() {
   web3 = new Web3(web3.currentProvider)
@@ -6,19 +6,17 @@ async function client() {
   $("#current-user").text(user)
   $("#airdrop").text(contractAddress)
   let airdrop = new web3.eth.Contract(abi, contractAddress);
-  $("#freeze-text").text(await getDate('freeze'))
-  $("#expiry-text").text(await getDate('expiry'))
-  $("#change-duration").click(changeDuration)
   $("#add-user").click(addUser)
   $("#remove-user").click(removeUser)
   $("#toggle-drop").click(toggleDrop)
   $("#redeem-tokens").click(redeemTokens)
   $("#reclaim-tokens").click(transferUnclaimedTokens)
+  $("#add-social").click(addSocial)
 
-  async function changeDuration() {
-    let freeze = time($("#freeze").val() - 0)
-    let expiry = time($("#expiry").val() - 0)
-    await sendTx(airdrop.methods.changeDuration(freeze, expiry))
+  async function addSocial() {
+    let address = $("#social-user").val()
+    let amount = ($("#social-amount").val() - 0) * 1e9
+    await sendTx(airdrop.methods.addSocial([address], [amount]))
   }
 
   async function addUser() {
@@ -40,7 +38,8 @@ async function client() {
   }
 
   async function transferUnclaimedTokens() {
-    await sendTx(airdrop.methods.transferUnclaimedTokens(user))
+    let amount = $("#amount").val() - 0
+    await sendTx(airdrop.methods.transferTokens(user, amount))
   }
 
   async function sendTx(tx) {
@@ -53,7 +52,7 @@ async function client() {
 
   async function getDate(prop) {
     let time = await airdrop.methods[prop]().call()
-    return new Date(time*1000)
+    return new Date(time * 1000)
   }
 
   function time(plus) {

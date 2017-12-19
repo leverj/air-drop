@@ -9,12 +9,11 @@ const _ = require('lodash');
 const Airdrop = require('../build/contracts/Leverjbounty');
 const HumanStandardToken = require('../build/contracts/HumanStandardToken');
 const users = require(config.users);
+const social = require(config.social);
 
 async function deploy() {
   let mod = {};
   let deployer, web3, token, airdrop, gasPrice
-  let freeze = Math.round((new Date(config.airdrop.freeze).getTime()) / 1000)
-  let expiry = Math.round((new Date(config.airdrop.expiry).getTime()) / 1000)
 
   async function start() {
     web3 = new Web3(new Web3.providers.HttpProvider(config.network))
@@ -22,12 +21,13 @@ async function deploy() {
     gasPrice = Math.max((await web3.eth.getGasPrice()) - 0, config.minGas);
     await createContracts();
     await addUsers();
-    if (process.NODE_ENV === 'develop') await sendTx(token, token.methods.transfer(airdrop._address, 10000000000))
+    await addSocial();
+    if (process.env.NODE_ENV === 'develop') await sendTx(token, token.methods.transfer(airdrop._address, 1000e9))
   }
 
   async function createContracts() {
     token = await getOrCreateContract('Token', config.tokenAddress, HumanStandardToken, [1e18, 'TLEVERJ', 9, 'TLEV'])
-    airdrop = await getOrCreateContract('Airdrop', config.airDropAddress, Airdrop, [config.owners.concat(deployer.address), token._address, config.airdrop.levPerUser, freeze, expiry])
+    airdrop = await getOrCreateContract('Airdrop', config.airDropAddress, Airdrop, [config.owners.concat(deployer.address), token._address, config.airdrop.levPerUser])
   }
 
   async function createAccount() {
@@ -41,28 +41,27 @@ async function deploy() {
     console.log(users.length, chunks.length)
     for (let i = 0; i < chunks.length; i++) {
       console.log('chunk', i, 'start', chunks[i][0], chunks[i][chunks[i].length - 1])
-      await addChunk(chunks[i])
+      if (await airdrop.methods.users(chunks[i][0]).call())
+        continue
+      await sendTx(airdrop, airdrop.methods.addUsers(chunks[i]))
     }
   }
 
-  async function addChunk(chunk) {
-    if (await airdrop.methods.users(chunk[0]).call())
-      return
-    // let filtered = await filterUsers(chunk);
-    // console.log('chunk', filtered.length)
-    await sendTx(airdrop, airdrop.methods.addUsers(chunk))
-  }
-
-  async function filterUsers(users) {
-    let filtered = []
-    let promises = users.map(user => airdrop.methods.users(user).call())
-    let result = await Promise.all(promises)
-
-    for (let i = 0; i < users.length; i++) {
-      let user = users[i];
-      if (!result[i]) filtered.push(users[i])
+  async function addSocial() {
+    let chunks = _.chunk(social, 200)
+    console.log('working on social', social.length, chunks.length)
+    for (let i = 0; i < chunks.length; i++) {
+      let users = [], rewards = [];
+      chunks[i].forEach((entry) => {
+        users.push(entry[0])
+        rewards.push(entry[1])
+      })
+      console.log('chunk', i, 'start', users[0], users[users.length - 1])
+      let isPresent = (await airdrop.methods.social(users[0]).call()) - 0;
+      if (isPresent)
+        continue
+      await sendTx(airdrop, airdrop.methods.addSocial(users, rewards))
     }
-    return filtered;
   }
 
   async function getOrCreateContract(name, address, contractJson, values) {

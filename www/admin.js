@@ -5,7 +5,7 @@ async function client() {
   let user = (await web3.eth.getAccounts())[0];
   $("#current-user").text(user)
   $("#airdrop").text(contractAddress)
-  let airdrop = new web3.eth.Contract(abi, contractAddress);
+  let airdrop = new web3.eth.Contract(abi.airdrop, contractAddress);
   $("#add-user").click(addUser)
   $("#remove-user").click(removeUser)
   $("#toggle-drop").click(toggleDrop)

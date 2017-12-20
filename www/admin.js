@@ -1,5 +1,3 @@
-contractAddress = '0x803631F30592d2769BB87073bf820bFf9481D8c7';
-
 async function client() {
   web3 = new Web3(web3.currentProvider)
   let user = (await web3.eth.getAccounts())[0];

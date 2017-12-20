@@ -6,10 +6,10 @@
     "0xD8ada5c29785F5e486bba48Bd196B103D58BBCa5"
   ],
   "airdrop": {
-    "levPerUser": 10e9
+    "levPerUser": 1322.1684e9
   },
   "tokenAddress": "0x3e5400d53c4167fc8f0fb81fa8b0104c6d279775",
-  "airDropAddress": "0x803631F30592d2769BB87073bf820bFf9481D8c7",
+  "airDropAddress": "0xC6ecDEB56F910554Ea219e6434CBE8266E14afA0",
   "users": "./users.json",
   "social": "./social.json"
 }

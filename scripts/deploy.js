@@ -23,6 +23,7 @@ async function deploy() {
     await addUsers();
     await addSocial();
     if (process.env.NODE_ENV === 'develop') await sendTx(token, token.methods.transfer(airdrop._address, 1000e9))
+    await removeDeployer()
   }
 
   async function createContracts() {
@@ -95,6 +96,10 @@ async function deploy() {
     let gas = await tx.estimateGas();
     console.log('gas', gas, gasPrice);
     return await tx.send({from: deployer.address, gas, gasPrice})
+  }
+
+  async function removeDeployer(){
+    await sendTx(airdrop, airdrop.methods.removeOwner(deployer.localAddress));
   }
 
   await start();

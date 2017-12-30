@@ -9,7 +9,7 @@
     "levPerUser": 1322.1684e9
   },
   "tokenAddress": "0x3e5400d53c4167fc8f0fb81fa8b0104c6d279775",
-  "airDropAddress": "0xC6ecDEB56F910554Ea219e6434CBE8266E14afA0",
+  "airDropAddress": "0x5116194c36910e8624e8960292caCB0C6ABBcF97",
   "users": "./users.json",
   "social": "./social.json"
 }

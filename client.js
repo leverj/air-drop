@@ -35,13 +35,16 @@ async function client() {
     if (!web3.utils.isAddress(user)) {
       $("#my-modal").modal({show: true}).on('hidden.bs.modal', () => $("#user-address").focus())
     }
-    let [balance, available, dropEnabled] = await Promise.all([
+    let [balance, available, dropEnabled, levWithContract] = await Promise.all([
       token.methods.balanceOf(user).call(),
       airdrop.methods.balanceOf(user).call(),
       airdrop.methods.dropEnabled().call(),
+      token.methods.balanceOf(contractAddress).call(),
     ])
     $("#token-balance").text((balance / 1e9).toFixed(9))
-    $("#available-balance").text((available / 1e9).toFixed(9))
+    let availableForBounty = (available / 1e9).toFixed(9);
+    if(levWithContract < available && dropEnabled) availableForBounty += " <code>Insufficient Tokens. Refill pending.</code>"
+    $("#available-balance").html(availableForBounty)
     $("#drop-enabled").html(dropEnabled ? 'Enabled - LEV tokens can be redeemed.' : 'Disabled - LEV tokens <code>CAN NOT</code> be redeemed now. ' +
       '<br> Stay tuned at <a href="https://t.me/joinchat/C-gLzkMqKr1zmoeS-ZQePg" target="_blank">leverj chat <span class="glyphicon glyphicon-share" </a>')
   }

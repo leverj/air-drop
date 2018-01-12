@@ -1,3 +1,3 @@
-contractAddress = '0x5116194c36910e8624e8960292caCB0C6ABBcF97';
-tokenAddress = '0x3e5400d53c4167fc8f0fb81fa8b0104c6d279775';
-provider = 'https://ropsten.infura.io';
+contractAddress = '0x927b1c94345c8d1c01eb014f57be84f5c794b021';
+tokenAddress = '0x0F4CA92660Efad97a9a70CB0fe969c755439772C';
+provider = 'https://mainnet.infura.io';

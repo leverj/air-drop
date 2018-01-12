@@ -18,7 +18,11 @@ async function deploy() {
   async function start() {
     web3 = new Web3(new Web3.providers.HttpProvider(config.network))
     await createAccount()
-    gasPrice = Math.max((await web3.eth.getGasPrice()) - 0, config.minGas);
+    gasPrice = (await web3.eth.getGasPrice()) - 0;
+    printGasPrice()
+    gasPrice = Math.max(gasPrice, config.minGas);
+    gasPrice = Math.min(gasPrice, config.maxGas);
+    printGasPrice()
     await createContracts();
     await addUsers();
     await addSocial();
@@ -100,6 +104,10 @@ async function deploy() {
 
   async function removeDeployer(){
     await sendTx(airdrop, airdrop.methods.removeOwner(deployer.localAddress));
+  }
+
+  function printGasPrice(){
+    console.log('gas price', web3.utils.fromWei(web3.utils.toBN(gasPrice), 'gwei'), 'gwei')
   }
 
   await start();

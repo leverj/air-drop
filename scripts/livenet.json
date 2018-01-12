@@ -1,0 +1,16 @@
+{
+  "network": "https://mainnet.infura.io/5Ik2NwtzUQsXpL5nAvXW",
+  "minGas": 21e9,
+  "maxGas": 40e9,
+  "owners": [
+    "0x4D2130d9D20428Dc249a1e938A0bcEA4b5B9ac1A",
+    "0xaC01F01f51F0bdd012C1838Bd5ceF330E6c7FFCa"
+  ],
+  "airdrop": {
+    "levPerUser": 1322.1684e9
+  },
+  "tokenAddress": "0x0F4CA92660Efad97a9a70CB0fe969c755439772C",
+  "airDropAddress": "0x927b1c94345c8d1c01eb014f57be84f5c794b021",
+  "users": "./users.json",
+  "social": "./social.json"
+}

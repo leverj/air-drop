@@ -4,7 +4,7 @@ async function client() {
   let storage
   try {
     window.localStorage.test = 1
-    storage = window.localStorage
+    storage                  = window.localStorage
   }
   catch (e) {
     storage = {}
@@ -21,7 +21,7 @@ async function client() {
   let user = storage['user'];
   $("#user-address").val(user)
   let airdrop = new web3.eth.Contract(abi.airdrop, contractAddress);
-  let token = new web3.eth.Contract(abi.token, tokenAddress);
+  let token   = new web3.eth.Contract(abi.token, tokenAddress);
   $("#airdrop").text(contractAddress)
   $("#lev").text(tokenAddress)
   $("#redeem-address").text(contractAddress)
@@ -30,7 +30,7 @@ async function client() {
   refreshUserInfo();
 
   async function refreshUserInfo() {
-    user = $("#user-address").val()
+    user            = $("#user-address").val()
     storage['user'] = user
     if (!web3.utils.isAddress(user)) {
       $("#my-modal").modal({show: true}).on('hidden.bs.modal', () => $("#user-address").focus())
@@ -41,9 +41,9 @@ async function client() {
       airdrop.methods.dropEnabled().call(),
       token.methods.balanceOf(contractAddress).call(),
     ])
-    $("#token-balance").text((balance / 1e9).toFixed(9))
+    $("#token-balance").text((levWithContract / 1e9).toFixed(9))
     let availableForBounty = (available / 1e9).toFixed(9);
-    if(levWithContract < available && dropEnabled) availableForBounty += " <code>Insufficient Tokens. Refill pending.</code>"
+    if ((available - levWithContract) >= 0 && dropEnabled) availableForBounty += " <code>Insufficient Tokens. Refill pending.</code>"
     $("#available-balance").html(availableForBounty)
     $("#drop-enabled").html(dropEnabled ? 'Enabled - LEV tokens can be redeemed.' : 'Disabled - LEV tokens <code>CAN NOT</code> be redeemed now. ' +
       '<br> Stay tuned at <a href="https://t.me/joinchat/C-gLzkMqKr1zmoeS-ZQePg" target="_blank">leverj chat <span class="glyphicon glyphicon-share" </a>')

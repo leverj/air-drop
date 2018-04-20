@@ -24,8 +24,10 @@ async function client() {
   let token   = new web3.eth.Contract(abi.token, tokenAddress);
   $("#airdrop").html(contractAddress + "&nbsp;<a target='_blank' href='https://etherscan.io/address/" + contractAddress + "'><span class='glyphicon glyphicon-new-window'></span></a>")
   $("#lev").html(tokenAddress + "&nbsp;<a target='_blank' href='https://etherscan.io/address/" + tokenAddress + "'><span class='glyphicon glyphicon-new-window'></span></a>")
-  $("#redeem-address").html("<samp>" + contractAddress + "</samp>")
-  $("#redeem-data").html("<samp>" + airdrop.methods.redeemTokens().encodeABI() + "</samp>")
+  $("#redeem-address").text(contractAddress)
+  let tx = airdrop.methods.redeemTokens();
+  $("#redeem-data").text(tx.encodeABI())
+  $("#gas-price").text(web3.utils.fromWei(await web3.eth.getGasPrice(), "gwei") -0  + 1 + " GWEI")
   $('#refresh').click(refreshUserInfo)
   refreshUserInfo();
 
@@ -64,6 +66,13 @@ async function client() {
       $("#token-status").show().html('If you DID participate in the bounty program, please enter the Ethereum address that you registered for the airdrop with.')
         .removeClass('text-danger').addClass('text-success')
       $("#redeem-instructions").hide()
+    }
+    try {
+      let gas = await tx.estimateGas({from:user});
+      $("#gas-limit").text(gas)
+    } catch (e) {
+      console.error(e)
+      $("#gas-limit").html("<code>" + e.message + "</code>")
     }
   }
 

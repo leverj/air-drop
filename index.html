@@ -47,55 +47,72 @@
     <h3 class="navbar-text center">LEVERJ BOUNTY</h3>
   </div>
 </nav>
-
 <div class="container">
+  <h4 class="text-center text-success" id="drop-status"></h4>
+  <br>
+  <table class="table table-striped">
+    <tr>
+      <td>Airdrop Contract Address</td>
+      <td id="airdrop">&nbsp;</td>
+    </tr>
+    <tr>
+      <td>LEV Contract Address</td>
+      <td id="lev">&nbsp;</td>
+    </tr>
+    <tr>
+      <td>Total LEV Balance in Airdrop Contract</td>
+      <td id="token-balance">&nbsp;</td>
+    </tr>
+  </table>
+  <div class="alert alert-warning" role="alert">
+    The Leverj Airdrop is only available to those who participated in the Bounty program last year. If
+    you did NOT participate, then you are NOT eligible to receive any LEV tokens. Do not attempt to send the below
+    transaction or you will waste gas.
+  </div>
+  <!--<div class="alert alert-success" role="alert">
+    If you DID participate in the bounty program, please enter the Ethereum address that you registered for the airdrop
+    with
+  </div>
+-->
   <div class="input-group">
-    <input type="text" class="form-control" id="user-address" placeholder="Ethereum address">
-    <div id="refresh" class="input-group-addon btn"><span class="glyphicon glyphicon-refresh"></span></div>
+    <input type="text" class="form-control" id="user-address"
+           placeholder="Please enter the ethereum address you registered for the airdrop with">
+    <div id="refresh" class="input-group-addon btn">Load Info</div>
   </div>
   <br>
   <table class="table table-striped">
     <tr>
-      <td>AIRDROP CONTRACT</td>
-      <td id="airdrop">&nbsp;</td>
-    </tr>
-    <tr>
-      <td>LEV ADDRESS</td>
-      <td id="lev">&nbsp;</td>
-    </tr>
-    <tr>
-      <td>LEV BALANCE</td>
-      <td id="token-balance">&nbsp;</td>
-    </tr>
-    <tr>
-      <td>LEV AVAILABLE IN LEVERJ BOUNTY</td>
+      <td>LEV Tokens Available for Redemption</td>
       <td id="available-balance">&nbsp;</td>
     </tr>
-    <tr>
-      <td>DROP STATUS</td>
-      <td id="drop-enabled">&nbsp;</td>
-    </tr>
   </table>
-  <br>
-  <div>
-    <h3>Use following data to redeem your tokens from your wallet of choice.</h3>
-    <br>
-    <br>
-    <table class="table table-striped">
-      <tr>
-        <td>To Address</td>
-        <td id="redeem-address">&nbsp;</td>
-      </tr>
-      <tr>
-        <td>Amount</td>
-        <td>0</td>
-      </tr>
-      <tr>
-        <td>Data</td>
-        <td id="redeem-data">&nbsp;</td>
-      </tr>
-    </table>
+  <h5 id="token-status" class="text-danger"></h5>
+  <div id="redeem-instructions" class="panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title">How to redeem your tokens</h3>
+    </div>
+    <div class="panel-body">
+      <p id="redeem-instructions-message">Use following data to redeem your tokens from your wallet of choice.</p>
+      <br>
+      <table class="table table-striped">
+        <tr>
+          <td>To Address</td>
+          <td id="redeem-address">&nbsp;</td>
+        </tr>
+        <tr>
+          <td>Amount</td>
+          <td><samp>0</samp></td>
+        </tr>
+        <tr>
+          <td>Data</td>
+          <td id="redeem-data">&nbsp;</td>
+        </tr>
+      </table>
+      <div class="text-success">Whether you are using MetaMask, Ledger, MyEtherWallet -- anywhere that you have access to the Ethereum address you registered the bounty with, send a transaction with the details above.
+      </div>
+    </div>
   </div>
+
 </div>
 <div class="modal fade" id="my-modal" tabindex="-1" role="dialog">
   <div class="modal-dialog" role="document">

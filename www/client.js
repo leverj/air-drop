@@ -22,31 +22,49 @@ async function client() {
   $("#user-address").val(user)
   let airdrop = new web3.eth.Contract(abi.airdrop, contractAddress);
   let token   = new web3.eth.Contract(abi.token, tokenAddress);
-  $("#airdrop").text(contractAddress)
-  $("#lev").text(tokenAddress)
-  $("#redeem-address").text(contractAddress)
-  $("#redeem-data").text(airdrop.methods.redeemTokens().encodeABI())
+  $("#airdrop").html(contractAddress + "&nbsp;<a target='_blank' href='https://etherscan.io/address/" + contractAddress + "'><span class='glyphicon glyphicon-new-window'></span></a>")
+  $("#lev").html(tokenAddress + "&nbsp;<a target='_blank' href='https://etherscan.io/address/" + tokenAddress + "'><span class='glyphicon glyphicon-new-window'></span></a>")
+  $("#redeem-address").html("<samp>" + contractAddress + "</samp>")
+  $("#redeem-data").html("<samp>" + airdrop.methods.redeemTokens().encodeABI() + "</samp>")
   $('#refresh').click(refreshUserInfo)
   refreshUserInfo();
 
   async function refreshUserInfo() {
-    user            = $("#user-address").val()
+    user            = $("#user-address").val().trim()
     storage['user'] = user
-    if (!web3.utils.isAddress(user)) {
+    if (user && !web3.utils.isAddress(user)) {
       $("#my-modal").modal({show: true}).on('hidden.bs.modal', () => $("#user-address").focus())
     }
-    let [balance, available, dropEnabled, levWithContract] = await Promise.all([
-      token.methods.balanceOf(user).call(),
+    let [available, dropEnabled, levWithContract] = await Promise.all([
       airdrop.methods.balanceOf(user).call(),
       airdrop.methods.dropEnabled().call(),
       token.methods.balanceOf(contractAddress).call(),
     ])
+    // available = '2083294294495000'
+    $("#token-status").hide()
+    $("#redeem-instructions").show()
+    $("#redeem-instructions-message").html('To redeem your tokens, simply send a transaction from the Ethereum address you registered with <i>(' + user + ')<i>')
+    if ((available - 0) === 0) {
+      $("#token-status").show().html('There are no tokens available to redeem for this address')
+        .addClass('text-danger').removeClass('text-success')
+      $("#redeem-instructions").hide()
+    }
+
     $("#token-balance").text((levWithContract / 1e9).toFixed(9))
     let availableForBounty = (available / 1e9).toFixed(9);
-    if ((available - levWithContract) >= 0 && dropEnabled) availableForBounty += " <code>Insufficient Tokens. Refill pending.</code>"
+    if ((available - levWithContract) >= 0 && dropEnabled) {
+      $("#token-status").show().html('Insufficient tokens available in Airdrop contract to cover your allocation. Please contact us on <a href="https://t.me/Leverj" target="_blank">Telegram</a>')
+        .addClass('text-danger').removeClass('text-success')
+      $("#redeem-instructions").hide()
+    }
     $("#available-balance").html(availableForBounty)
-    $("#drop-enabled").html(dropEnabled ? 'Enabled - LEV tokens can be redeemed.' : 'Disabled - LEV tokens <code>CAN NOT</code> be redeemed now. ' +
-      '<br> Stay tuned at <a href="https://t.me/joinchat/C-gLzkMqKr1zmoeS-ZQePg" target="_blank">leverj chat <span class="glyphicon glyphicon-share" </a>')
+    $("#drop-status").html(dropEnabled ? 'Airdrop tokens are now available for redemption.' : '')
+
+    if (!user) {
+      $("#token-status").show().html('If you DID participate in the bounty program, please enter the Ethereum address that you registered for the airdrop with.')
+        .removeClass('text-danger').addClass('text-success')
+      $("#redeem-instructions").hide()
+    }
   }
 
 
@@ -55,3 +73,5 @@ async function client() {
 $(document).ready(function () {
   client().catch(console.error)
 })
+
+
